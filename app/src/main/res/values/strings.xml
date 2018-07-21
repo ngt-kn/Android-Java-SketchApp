@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sketch</string>
+    <string name="Save">Save</string>
+    <string name="Color">Color</string>
+    <string name="Erase">Erase</string>
+    <string name="Clear">Clear</string>
 </resources>
