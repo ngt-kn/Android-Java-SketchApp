@@ -39,6 +39,7 @@ public class SketchView extends View {
         paintLine = new Paint();
         paintLine.setAntiAlias(true);
         paintLine.setColor(Color.BLACK);
+        paintLine.setStyle(Paint.Style.STROKE);
         paintLine.setStrokeWidth(7);
         paintLine.setStrokeCap(Paint.Cap.ROUND);
 
@@ -117,7 +118,20 @@ public class SketchView extends View {
         }
     }
 
+    public void clear() {
+        // clear values from hashmaps
+        pathMap.clear();
+        previousPointMap.clear();
+        // reset color
+        bitmap.eraseColor(Color.WHITE);
+        // clear the screen
+        invalidate();
+    }
+
     private void touchEnded(int pointerId) {
+        Path path = pathMap.get(pointerId); // get the path
+        bitmapCanvas.drawPath(path, paintLine); //draw to bitmapCanvas
+        path.reset();
     }
 
     private void touchStarted(float x, float y, int pointerId) {
