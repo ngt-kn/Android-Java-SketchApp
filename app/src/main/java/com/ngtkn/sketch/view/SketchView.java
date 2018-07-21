@@ -118,6 +118,22 @@ public class SketchView extends View {
         }
     }
 
+    public void setDrawingolor (int color) {
+        paintLine.setColor(color);
+    }
+
+    public int getDrawingColor() {
+        return paintLine.getColor();
+    }
+
+    public void setLineWidth(int width) {
+        paintLine.setStrokeWidth(width);
+    }
+
+    int getLineWidth() {
+        return (int) paintLine.getStrokeWidth();
+    }
+
     public void clear() {
         // clear values from hashmaps
         pathMap.clear();

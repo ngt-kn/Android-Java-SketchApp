@@ -4,4 +4,5 @@
     <string name="Color">Color</string>
     <string name="Erase">Erase</string>
     <string name="Clear">Clear</string>
+    <string name="SetWidth">Set Width</string>
 </resources>
