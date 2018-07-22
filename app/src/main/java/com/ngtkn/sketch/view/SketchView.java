@@ -1,19 +1,41 @@
 package com.ngtkn.sketch.view;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.ngtkn.sketch.MainActivity;
+import com.ngtkn.sketch.R;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
+
+import static android.app.Activity.RESULT_OK;
+
 
 public class SketchView extends View {
     public static final float TOUCH_TOLERANCE = 10;
@@ -45,7 +67,6 @@ public class SketchView extends View {
 
         pathMap = new HashMap<>();
         previousPointMap = new HashMap<>();
-
     }
 
     // Create the bitmap and canvas
@@ -87,7 +108,6 @@ public class SketchView extends View {
     }
 
     private void touchMoved(MotionEvent event) {
-
         for (int i = 0; i < event.getPointerCount(); i++) {
             int pointerId = event.getPointerId(i);
             int pointerIndex = event.findPointerIndex(pointerId);
@@ -118,7 +138,7 @@ public class SketchView extends View {
         }
     }
 
-    public void setDrawingolor (int color) {
+    public void setDrawingColor(int color) {
         paintLine.setColor(color);
     }
 
@@ -130,7 +150,7 @@ public class SketchView extends View {
         paintLine.setStrokeWidth(width);
     }
 
-    int getLineWidth() {
+    public int getLineWidth() {
         return (int) paintLine.getStrokeWidth();
     }
 
@@ -170,6 +190,39 @@ public class SketchView extends View {
         point.x = (int) x;
         point.y = (int) y;
     }
-    
-    
+
+    // Save file to internal storage
+    public void saveToInternalStorage(){
+        ContextWrapper cw = new ContextWrapper(getContext());
+        String fileName = "Sketch" + System.currentTimeMillis();
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,fileName + ".jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.flush();
+                fos.close();
+                Toast message = Toast.makeText(getContext(), "Image Saved: " + directory.getAbsolutePath(), Toast.LENGTH_LONG);
+                message.setGravity(Gravity.CENTER, message.getXOffset()/2, message.getYOffset()/2);
+                message.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    // TODO: implement method to load from file
+    public void loadImageFromStorage(Bitmap bitmap) {
+            bitmapCanvas.setBitmap(bitmap);
+            invalidate();
+    }
+
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray" >
+    android:padding="25dp">
 
     <ImageView
         android:id="@+id/imageViewId"
@@ -15,7 +15,8 @@
         android:id="@+id/seekBarWidth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="50" />
+        android:max="50"
+        android:padding="14dp"/>
 
     <Button
         android:id="@+id/buttonWidthDialog"
